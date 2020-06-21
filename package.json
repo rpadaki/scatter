@@ -20,6 +20,8 @@
   },
   "homepage": "https://github.com/rpadaki/scatter#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "lodash": "^4.17.15",
+    "socket.io": "^2.3.0"
   }
 }
