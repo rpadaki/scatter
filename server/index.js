@@ -9,6 +9,8 @@ const io = require("socket.io")(server);
 const EventEmitter = require("events");
 const _ = require("lodash");
 
+const gameStates = {};
+
 class SocketManager extends EventEmitter {
     constructor() {
         super();
@@ -30,8 +32,10 @@ class SocketManager extends EventEmitter {
 
                 if (!this.gameToSocket.get(gameId)) {
                     this.gameToSocket.set(gameId, []);
+                    gameStates[gameId] = { size: 0 };
                 }
                 this.gameToSocket.get(gameId).push(socket);
+                gameStates[gameId].size++;
                 this.socketToGame.set(socket, gameId);
 
                 ack();
@@ -48,8 +52,10 @@ class SocketManager extends EventEmitter {
 
                 if (this.gameToSocket.has(gameId)) {
                     _.remove(this.gameToSocket.get(gameId), socket);
-                    if (!this.gameToSocket.get(gameId).size) {
+                    gameStates[gameId].size--;
+                    if (!this.gameToSocket.get(gameId).length) {
                         this.gameToSocket.delete(gameId);
+                        delete gameStates[gameId];
                     }
                 }
             });
@@ -61,8 +67,6 @@ class SocketManager extends EventEmitter {
         return super.emit(type, ...args) || super.emit("", ...args);
     }
 }
-
-const gameStates = {};
 
 const socketManager = new SocketManager();
 
