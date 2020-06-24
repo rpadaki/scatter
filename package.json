@@ -6,7 +6,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "heroku-postbuild": "cd client && npm install && npm run build"
+    "heroku-postbuild": "cd client && npm install && npm run build",
+    "postinstall": "cd client && npm install",
+    "dev-client": "cd client && npm start",
+    "dev-server": "npm start",
+    "dev": "concurrently -c gray --command-colors gray --global-event-colors gray \"npm run dev-client\" \"npm run dev-server\""
   },
   "repository": {
     "type": "git",
@@ -20,6 +24,7 @@
   },
   "homepage": "https://github.com/rpadaki/scatter#readme",
   "dependencies": {
+    "concurrently": "git+https://github.com/rpadaki/concurrently.git",
     "express": "^4.17.1",
     "lodash": "^4.17.15",
     "socket.io": "^2.3.0"
